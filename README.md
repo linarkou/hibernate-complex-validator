@@ -24,3 +24,22 @@ Tool for complex validation rules for use with Bean Validation API
       }
   }
   ```
+
+You can also return List with property name already defined in your `ValidationMessages.properties` file:
+```
+public class SomeDataClassValidator implements Validator<SomeDataClass> {
+    @Override
+    public List<String> isValid(SomeDataClass value) {
+        List<String> validMessages = new ArrayList<>();
+        boolean isValid = value.getFirst() == null || value.getSecond() != null;
+        if (!isValid) {
+*             validMessages.add("{some.validation.message}");
+        }
+        return validMessages;
+    }
+}
+```
+and `ValidationMessages.properties` should contains:
+```
+some.validation.message='first' shouldn't exist without 'second'!
+```
